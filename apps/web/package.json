@@ -1,0 +1,11 @@
+{
+  "name": "@repo/web",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "echo \"web app scaffold pending\"",
+    "build": "echo \"web build scaffold pending\"",
+    "lint": "echo \"web lint scaffold pending\"",
+    "typecheck": "echo \"web typecheck scaffold pending\""
+  }
+}

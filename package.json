@@ -1,0 +1,23 @@
+{
+  "name": "betagent",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.10.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "prisma:generate": "turbo run prisma:generate",
+    "check": "biome check ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "pnpm": "10.10.0",
+    "turbo": "^2.5.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@repo/ingest",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "echo \"ingest service scaffold pending\"",
+    "build": "echo \"ingest build scaffold pending\"",
+    "lint": "echo \"ingest lint scaffold pending\"",
+    "typecheck": "echo \"ingest typecheck scaffold pending\""
+  }
+}

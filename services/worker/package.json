@@ -1,0 +1,11 @@
+{
+  "name": "@repo/worker",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "echo \"worker service scaffold pending\"",
+    "build": "echo \"worker build scaffold pending\"",
+    "lint": "echo \"worker lint scaffold pending\"",
+    "typecheck": "echo \"worker typecheck scaffold pending\""
+  }
+}

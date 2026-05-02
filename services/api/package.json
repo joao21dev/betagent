@@ -1,0 +1,17 @@
+{
+  "name": "@repo/api",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "echo \"api service scaffold pending\"",
+    "build": "echo \"api build scaffold pending\"",
+    "lint": "echo \"api lint scaffold pending\"",
+    "typecheck": "echo \"api typecheck scaffold pending\""
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3"
+  }
+}
