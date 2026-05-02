@@ -1,0 +1,28 @@
+---
+description: Frontend Next.js and React conventions for BetAgent apps.
+globs:
+  - "apps/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+- Default to React Server Components. Add `"use client"` only when interactivity (`useState`, `useEffect`, browser APIs, drag/drop, etc.) justifies bundling logic to the browser.
+- Follow App Router primitives: colocate routes under `app/`, expose `layout.tsx`, `loading.tsx`, `error.tsx`, and `not-found.tsx` per subtree requirements.
+
+### Package imports
+
+- UI primitives originate from `@repo/ui` (already-wrapped shadcn exports).
+- Reusable compositions live in `@repo/components`.
+- Hooks/utilities/session glue live in `@repo/core`.
+- Every GraphQL document must import typed hooks/selectors strictly from `@repo/graphql`.
+- Do not stash bespoke widgets inside `@repo/ui`.
+
+### Data and forms
+
+- Use generated hooks/selectors exported by `@repo/graphql`; never interpolate ad-hoc query strings inline in JSX.
+- Wire forms with react-hook-form + zod schemas via `@hookform/resolvers/zod` and colocate schemas in `<feature>.schemas.ts` near the owning form folder.
+
+### Security and authentication
+
+- Call `auth()`/`getServerSession` helpers from server components/route handlers whenever reading protected props.
+- Client components consume `useSession` only after ensuring data was already guarded server-side.
+- Keep CSP nonce middleware plus secure headers (`X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`) enabled globally.

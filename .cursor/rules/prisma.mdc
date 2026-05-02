@@ -1,0 +1,31 @@
+---
+description: Prisma modeling and migration conventions for BetAgent.
+globs:
+  - "**/schema.prisma"
+  - "**/prisma/**/*.ts"
+alwaysApply: false
+---
+
+- Prefer `String @id @default(cuid())`. Never mint composite PKs unless a domain invariant demands it with ADR justification.
+- Store vendor identifiers in prefixed columns (`externalSportsId`, `stripeCustomerId`, `supabaseExternalId`, ...).
+- Map Prisma models to plural snake_case tables through `@@map("table_name")`.
+- Foreign-key fields follow `<entityId>`; timestamps follow `<pastTenseVerb>At` naming.
+
+### Money and numeric precision
+
+- Product pricing fields stay integers in cents.
+- Accumulated AI spend fields stay BigInt quantities such as `costUsdMicros`. Never serialize currency math as floats in Prisma enums or JSON payloads.
+
+### Time series plus vectors
+
+- Treat `OddSnapshot` as immutable inserts; forbid updates/deletes unless a remediation script with audit trail executes.
+- Partition `odd_snapshots` monthly via hand-authored SQL appended to migrations.
+- Default analytics index `(matchId, marketType, selection, capturedAt desc)` plus supporting partial indexes justified per workload ADR.
+- Represent embeddings via `Unsupported("vector(1536)")` columns; forbid Prisma-managed writes beyond raw SQL wrappers.
+- All similarity lookups pass through audited `prisma.$queryRaw` helpers; create HNSW indexes manually alongside migrations.
+
+### Migrations and seeds
+
+- Run `npm run db:migrate` (wrapping Prisma migrations) locally; CI applies deploy via the same scripted entrypoint tuned for pipelines.
+- Layer manual SQL chunks for Postgres extensions (`pgcrypto`, `uuid-ossp`, `vector`), partitioned tables, HNSW, materialized refreshes after Prisma emits its baseline DDL.
+- Keep `services/api/prisma/seed.ts` deterministic: seed sports metadata, marquee leagues, curated bookmaker catalog, subscription slabs, bootstrap `AgentVersion`.

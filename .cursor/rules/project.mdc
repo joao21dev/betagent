@@ -1,0 +1,41 @@
+---
+description: Core BetAgent monorepo standards and prohibitions.
+alwaysApply: true
+---
+
+## Critical prohibitions
+
+- Never use type escape hatches (`any`, `biome-ignore`, `@ts-ignore`, or unscoped `@ts-expect-error`). Prefer explicit types, `unknown` plus type guards, and narrow unsafe spots at boundaries.
+- Fix root diagnostics instead of suppressing them unless the suppression is unavoidable and scoped minimally (not part of baseline BetAgent scaffolding).
+
+## Required stack
+
+- TypeScript strict mode spanning backend + frontend packages.
+- Backend uses NestJS 11 modules, Apollo GraphQL, Prisma, PostgreSQL, pgvector embeddings, Redis (BullMQ, pub/sub, Nest micro transports).
+- Frontend ships Next.js 15 App Router, React 19, Apollo Client, NextAuth bridging Supabase sessions.
+- Biome lint/format complements Zod, react-hook-form, date-fns, sonner integrations when applicable.
+
+## Monorepo map
+
+- `apps/web`: Next dashboard; `@repo/ui` keeps shadcn primitives, `@repo/components` exposes shared JSX, `@repo/core` publishes hooks/util/session glue.
+- `services/*`: NestJS microservices composing `services/api` (GraphQL CASL/API), `services/ingest` (fixtures plus odds ingestion with Bull workloads), `services/worker` (queues plus LangGraph analysis writers).
+
+## Package boundaries
+
+- Imports stay directional: primitives -> `@repo/ui`, shared composites -> `@repo/components`, infra -> `@repo/core`, documents -> `@repo/graphql`, DB access -> `@repo/prisma-client`, DI contracts live in `@repo/domain`.
+
+## Core engineering rules
+
+- Keep transports thin; encapsulate persistence + workflows inside domain services guarded by validators.
+- Incoming DTOs never leak Prisma clauses; integrations always expose timeouts/backoff tiers; downstream jobs cannot undo persisted writes arbitrarily.
+- `ValueEngineService` owns deterministic EV+ arithmetic; prompts never hallucinate payouts.
+
+## Development commands (mirror via `pnpm` locally)
+
+- `npm run dev`
+- `npm run build`
+- `npm run codegen`
+- `npm run db:migrate`
+- `npm run lint`
+- `npm run lint:fix`
+- `npm test`

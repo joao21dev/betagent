@@ -1,0 +1,25 @@
+---
+description: Backend NestJS and TypeScript conventions for BetAgent services.
+globs:
+  - "services/**/*.ts"
+alwaysApply: false
+---
+
+- Author everything in English. Give explicit parameter and return types for public functions with no implicit `any`.
+- Use kebab-case filenames, one exported symbol per module, verbs for functions, booleans prefixed with `is`, `has`, or `can`.
+- Prefer RO-RO (receiver object + returned object) any time a callable would otherwise take multiple positional arguments.
+- Keep helpers short (<20 actionable statements), favor early returns, and avoid nesting deeper than two levels unless Prisma awaits force otherwise.
+- Resolvers/controllers only translate transport concerns; nest business logic exclusively in injectable domain services plus focused helpers when needed.
+- Never leak raw Prisma `WhereInput`, `OrderBy`, `Select`, etc. shapes through GraphQL DTOs or REST bodies.
+- Every external integration (REST, SSE, SOAP, sockets, queues, cron HTTP) configures explicit timeouts plus retry policies capped with jitter.
+- Emails/notifications/logging jobs must catch errors, annotate logs, yet never unwind the successful primary transaction.
+
+### Domain module layout
+
+- Folder per entity under `services/<service>/src/<entity>/`:
+  - `<entity>.module.ts`
+  - `<entity>.resolver.ts` (omit when RPC-only ingest/worker queues)
+  - `<entity>.service.ts`
+  - `<entity>.dataloader.ts` (only when N+1 risk exists)
+  - `dto/` for args, inputs, outputs
+- Forbid Mongoose-style `<entity>.model.ts`; authoritative schema remains `services/api/prisma/schema.prisma`.

@@ -1,0 +1,29 @@
+---
+description: Guidelines for creating git commit messages for BetAgent.
+alwaysApply: false
+---
+
+## Format
+
+1. Ticket prefix plus imperative subject: `TICKET-NUMBER: Short descriptive title`
+2. Blank line separating title from bullets.
+3. Bulleted narrative with `- ` markers, written in present tense, active voice.
+
+## Title rules
+
+- Keep subject between 50-72 ASCII characters excluding the tracker prefix portion.
+- Use imperative mood describing the headline change bucket.
+
+## Body rules
+
+- Each bullet summarizes one coherent unit of change; cite modules or filenames when ambiguity exists.
+- Group related deltas; omit mechanical noise (“formatting leftovers”, whitespace-only churn).
+- If no tracker slug exists yet, fall back prefix `pref` or migrate to plain Conventional Commits (`feat(scope): ...`). Confirm with stakeholders before rewriting history.
+
+```text
+BET-101: Harden BullMQ enqueue idempotency
+
+- Add deterministic job identifiers for match analysis backlog replays.
+- Document retry caps inside `MATCH_ANALYSIS_QUEUE` producer.
+- Extend worker metrics to differentiate duplicate suppressions versus failures.
+```
