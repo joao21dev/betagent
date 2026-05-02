@@ -9,3 +9,93 @@ datasource db {
   url        = env("DATABASE_URL")
   extensions = [pgvector(map: "vector")]
 }
+
+enum MatchStatus {
+  SCHEDULED
+  LIVE
+  FINISHED
+  POSTPONED
+  CANCELED
+}
+
+model Sport {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  displayName String
+  createdAt   DateTime @default(now())
+  leagues     League[]
+
+  @@map("sports")
+}
+
+model League {
+  id                     String    @id @default(cuid())
+  sportId                String
+  externalSportsId       String
+  externalSportsProvider String
+  slug                   String    @unique
+  displayName            String
+  country                String
+  tier                   Int?
+  logoUrl                String?
+  currentSeason          String?
+  isActive               Boolean   @default(true)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  sport                  Sport     @relation(fields: [sportId], references: [id])
+  teams                  Team[]
+  matches                Match[]
+
+  @@unique([externalSportsProvider, externalSportsId])
+  @@index([country, tier])
+  @@map("leagues")
+}
+
+model Team {
+  id                     String   @id @default(cuid())
+  leagueId               String
+  externalSportsId       String
+  externalSportsProvider String
+  name                   String
+  shortName              String?
+  logoUrl                String?
+  countryCode            String?
+  foundedYear            Int?
+  venueName              String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  league                 League   @relation(fields: [leagueId], references: [id])
+  homeMatches            Match[]  @relation("HomeTeam")
+  awayMatches            Match[]  @relation("AwayTeam")
+
+  @@unique([externalSportsProvider, externalSportsId])
+  @@index([leagueId, name])
+  @@map("teams")
+}
+
+model Match {
+  id                     String      @id @default(cuid())
+  leagueId               String
+  externalSportsId       String
+  externalSportsProvider String
+  homeTeamId             String
+  awayTeamId             String
+  kickoffAt              DateTime
+  status                 MatchStatus @default(SCHEDULED)
+  venueName              String?
+  referee                String?
+  homeScore              Int?
+  awayScore              Int?
+  lineupsJson            Json?
+  statsJson              Json?
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+  league                 League      @relation(fields: [leagueId], references: [id])
+  homeTeam               Team        @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam               Team        @relation("AwayTeam", fields: [awayTeamId], references: [id])
+
+  @@unique([externalSportsProvider, externalSportsId])
+  @@index([kickoffAt, status])
+  @@index([leagueId, kickoffAt])
+  @@map("matches")
+}

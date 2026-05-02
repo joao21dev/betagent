@@ -22,3 +22,7 @@
 - `OddSnapshot` is append-only and partitioned by month.
 - CASL access for analysis combines jurisdiction, plan tier, league scope, and EV thresholds.
 - New analysis versions supersede previous versions via `supersededAt`.
+
+## Smoke commands (development)
+
+Vertical slice (Nest GraphQL + Next list): apply `.env.example`, run Postgres migrations + seed, start `pnpm --filter @repo/api dev` then `pnpm --filter @repo/web dev`. Details in [README.md](README.md).

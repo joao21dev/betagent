@@ -12,7 +12,11 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "prisma:generate": "turbo run prisma:generate",
-    "check": "biome check ."
+    "check": "biome check .",
+    "db:migrate": "pnpm --filter @repo/api exec prisma migrate dev",
+    "db:seed": "pnpm --filter @repo/api exec prisma db seed",
+    "db:deploy": "pnpm --filter @repo/api exec prisma migrate deploy",
+    "codegen": "echo \"GraphQL codegen not configured yet; point @graphql-codegen at services/api/graphql-schema.generated.gql\""
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

@@ -3,15 +3,41 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "echo \"api service scaffold pending\"",
-    "build": "echo \"api build scaffold pending\"",
-    "lint": "echo \"api lint scaffold pending\"",
-    "typecheck": "echo \"api typecheck scaffold pending\""
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "dev": "nest start --watch",
+    "lint": "biome check src prisma/seed.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3"
+    "@apollo/server": "^5.5.0",
+    "@nestjs/apollo": "^13.0.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/graphql": "^13.0.0",
+    "@nestjs/passport": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@repo/prisma-client": "workspace:*",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "graphql": "^16.10.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "prisma": "^6.19.3"
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/passport-jwt": "^4.0.1",
+    "prisma": "^6.19.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
