@@ -1,29 +1,39 @@
 ---
-description: Guidelines for creating git commit messages for BetAgent.
+description: Guidelines for git commit messages using Conventional Commits for BetAgent.
 alwaysApply: false
 ---
 
 ## Format
 
-1. Ticket prefix plus imperative subject: `TICKET-NUMBER: Short descriptive title`
-2. Blank line separating title from bullets.
-3. Bulleted narrative with `- ` markers, written in present tense, active voice.
+1. Single header line: `<type>(<optional-scope>): <imperative subject>`
+2. Optional blank line, then body (bullets or prose) explaining what and why.
+3. Optional footer lines: `BREAKING CHANGE: ...`, issue refs (`Fixes #42`), or tracker IDs if the team still links tickets in footers only.
+
+## Types (common)
+
+Use lowercase type from the Conventional Commits spec: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Prefer the narrowest accurate type.
+
+## Scope
+
+- Prefer a monorepo scope: `web`, `api`, `ingest`, `worker`, `prisma-client`, `graphql`, `domain`, `ui`, `repo` (root tooling), or Nest module name when it clarifies the blast radius.
+- Omit scope when the change is broad or cross-cutting.
 
 ## Title rules
 
-- Keep subject between 50-72 ASCII characters excluding the tracker prefix portion.
-- Use imperative mood describing the headline change bucket.
+- Imperative mood (`add`, not `added` or `adds`).
+- ~50 characters target; hard cap ~72 for the full header line including type, scope, and colon.
+- No trailing period on the subject line.
 
-## Body rules
+## Breaking changes
 
-- Each bullet summarizes one coherent unit of change; cite modules or filenames when ambiguity exists.
-- Group related deltas; omit mechanical noise (“formatting leftovers”, whitespace-only churn).
-- If no tracker slug exists yet, fall back prefix `pref` or migrate to plain Conventional Commits (`feat(scope): ...`). Confirm with stakeholders before rewriting history.
+Either append `!` after type or scope (`feat(api)!: ...`) or add a `BREAKING CHANGE:` paragraph in the body describing migration impact.
+
+## Example
 
 ```text
-BET-101: Harden BullMQ enqueue idempotency
+feat(worker): harden BullMQ enqueue idempotency
 
 - Add deterministic job identifiers for match analysis backlog replays.
-- Document retry caps inside `MATCH_ANALYSIS_QUEUE` producer.
-- Extend worker metrics to differentiate duplicate suppressions versus failures.
+- Document retry caps for the match analysis queue producer.
+- Extend worker metrics to separate duplicate suppressions from failures.
 ```

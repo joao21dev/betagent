@@ -5,7 +5,7 @@
 - Always draft a plan and confirm before implementation.
 - Plan files live in `~/.cursor/plans/` and are not edited during implementation.
 - Standard implementation trigger phrase: "Implement the plan as specified...".
-- Commit messages are requested as a separate follow-up after implementation.
+- Commit messages are requested as a separate follow-up after implementation; use **Conventional Commits** (`type(scope): subject`, see `.cursor/rules/commits.mdc`).
 - Tests must use plain descriptive names without REQ tags.
 
 ## Learned Workspace Facts
